@@ -24,12 +24,13 @@
 */
 
 /*  external requirements  */
-const yargs = require("yargs")
-const chalk = require("chalk")
-const pty   = require("node-pty")
+const yargs     = require("yargs")
+const chalk     = require("chalk")
+const stripAnsi = require("strip-ansi")
+const pty       = require("node-pty")
 
 /*  internal requirements  */
-const my    = require("./package.json")
+const my        = require("./package.json")
 
 /*  establish asynchronous context  */
 ;(async () => {
@@ -184,16 +185,21 @@ const my    = require("./package.json")
     /*  send/receive data to/from child-process  */
     process.stdin.setRawMode(true)
     process.stdin.on("data", (data) => {
-        /*  clear soft timer  */
-        if (timerSoft !== null) {
-            clearTimeout(timerSoft)
-            timerSoft = null
-        }
+        /*  let timers react only on user input,
+            not terminal responses to escape sequences  */
+        const plain = stripAnsi(data.toString())
+        if (plain !== "") {
+            /*  clear soft timer  */
+            if (timerSoft !== null) {
+                clearTimeout(timerSoft)
+                timerSoft = null
+            }
 
-        /*  reset hard timer  */
-        if (timerHard !== null) {
-            clearTimeout(timerHard)
-            timerHard = setTimeout(sendResponse, argv.timeoutHard * 1000)
+            /*  reset hard timer  */
+            if (timerHard !== null) {
+                clearTimeout(timerHard)
+                timerHard = setTimeout(sendResponse, argv.timeoutHard * 1000)
+            }
         }
 
         /*  send data from stdin to child  */
