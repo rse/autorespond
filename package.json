@@ -1,0 +1,56 @@
+{
+    "name":        "autorespond",
+    "homepage":    "http://github.com/rse/autorespond",
+    "description": "Terminal Command Auto-Responder",
+    "version":     "0.9.0",
+    "license":     "MIT",
+    "author": {
+        "name":    "Dr. Ralf S. Engelschall",
+        "email":   "rse@engelschall.com",
+        "url":     "http://engelschall.com"
+    },
+    "keywords": [
+        "terminal", "command", "stdin", "automatic", "response"
+    ],
+    "repository": {
+        "type": "git",
+        "url":  "git://github.com/rse/autorespond.git"
+    },
+    "bugs": {
+        "url":  "http://github.com/rse/autorespond/issues"
+    },
+    "bin": {
+        "autorespond": "./autorespond.js"
+    },
+    "devDependencies": {
+        "babel-eslint":           "10.1.0",
+        "eslint":                 "7.2.0",
+        "eslint-config-standard": "14.1.1",
+        "eslint-plugin-standard": "4.0.1",
+        "eslint-plugin-promise":  "4.2.1",
+        "eslint-plugin-import":   "2.21.2",
+        "eslint-plugin-node":     "11.1.0",
+        "npm-run-all":            "4.1.5",
+        "pkg":                    "4.4.8",
+        "remark-cli":             "8.0.0",
+        "remark":                 "12.0.0",
+        "remark-man":             "7.0.0"
+    },
+    "dependencies" : {
+        "yargs":                  "15.3.1",
+        "chalk":                  "4.1.0",
+        "node-pty":               "0.9.0"
+    },
+    "engines": {
+        "node":                   ">=10.0.0"
+    },
+    "scripts": {
+        "prepublishOnly":         "npm-run-all -s lint",
+        "build":                  "npm-run-all -s lint generate:man",
+        "clean":                  "npm-run-all -s generate:clean",
+        "lint":                   "eslint --config eslint.yaml autorespond.js",
+        "package":                "make package",
+        "generate:man":           "remark --quiet --use remark-man --output autorespond.1 autorespond.md",
+        "generate:clean":         "rm -f autorespond.1"
+    }
+}
