@@ -65,7 +65,10 @@ The following command-line options and arguments exist:
 ## EXAMPLES
 
 ```
+# interrupt after 10 seconds after the last user interaction
 $ autorespond -T 10 -r '\k{ctrl+c}\n' tail -f logfile
+
+# terminate after 30 seconds in case of no user interaction at all
 $ autorespond -t 30 -r 'exit\n' bash
 ```
 

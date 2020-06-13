@@ -1,57 +1,50 @@
 
-postproc
-========
+autorespond
+===========
 
-**Post-Process Output of Program**
-
-<p/>
-<img src="https://nodei.co/npm/postproc.png?downloads=true&stars=true" alt=""/>
+**Terminal Command Auto-Response**
 
 <p/>
-<img src="https://david-dm.org/rse/postproc.png" alt=""/>
+<img src="https://nodei.co/npm/autorespond.png?downloads=true&stars=true" alt=""/>
+
+<p/>
+<img src="https://david-dm.org/rse/autorespond.png" alt=""/>
 
 Abstract
 --------
 
-`postproc`(1) is a small utility for flexibly post-processsing the
-`stdout` and `stderr` outputs of shell commands. It applies one or more
-post-processing rules to each line of output. Each rule can have zero or
-more conditions and one or more actions. The conditions allow to match
-the output line with the help of regular expressions or active tags. The
-actions allow to change the output line with the help of replacement
-strings, can add or delete active tags and can force the repeating or
-stopping of the rules for the current line and can force the ignoring of
-the current line.
+`autorespond`(1) is a small utility for executing a command in an
+interactive terminal session and automatically sending a response input
+to the command in case of an interaction timeout.
+
+It is intended to be used in training scenarios where some interactive
+commands (like a shell) have to be executed in a scripted session but
+they should be automatically terminated (like sending `exit\n`) in case
+the trainee does not manually interact with it. This allows the same
+scripting sessions to be executed in batch and interactively.
 
 Installation
 ------------
 
 ```
-$ npm install -g postproc
+$ npm install -g autorespond
 ```
 
 Usage
 -----
 
-The [Unix manual page](https://github.com/rse/postproc/blob/master/postproc.md) contains
+The [Unix manual page](https://github.com/rse/autorespond/blob/master/autorespond.md) contains
 detailed usage information.
 
 Examples
 --------
 
 ```
-# adds timestamp prefix
-$ postproc -e ': "[%c(blue)%t(YYYY-MM-DD hh:mm:ss.SS)%c(reset)] $0"' \
-  npm install
+# interrupt after 10 seconds after the last user interaction
+$ autorespond -T 10 -r '\k{ctrl+c}\n' tail -f logfile
 
-# marks directories as blue
-$ postproc -e '/^(d.+\s+)(\S+)$/ : "$1%c(blue)$2/%c(reset)"' \
-  ls -l
-
-# complex state-based marking of subsequent line
-# postproc -e '/complete log/ : #logfile break' \
-           -e '#logfile : "%c(bold)$0%c(reset)" !#logfile' \
-  npm install not-existing-module
+# terminate after 30 seconds in case of no user interaction at all
+$ autorespond -t 30 -r 'exit\n' bash
 ```
 
 License
