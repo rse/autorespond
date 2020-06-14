@@ -20,7 +20,7 @@ to the command in case of an interaction timeout.
 
 It is intended to be used in training scenarios where some interactive
 commands (like a shell) have to be executed in a scripted session but
-they should be automatically terminated (like sending `exit\n`) in case
+they should be automatically terminated (like sending "`exit\n`") in case
 the trainee does not manually interact with it. This allows the same
 scripting sessions to be executed in batch and interactively.
 
@@ -36,31 +36,38 @@ The following command-line options and arguments exist:
 
 - \[`-t`|`--timeout-soft` *seconds*\]:
   Time to wait in seconds before injecting the response on `stdin`, in
-  case no interaction happened on `stdin` by the user.
+  case no interaction happened on `stdin` by the user at all.
 
 - \[`-T`|`--timeout-hard` *seconds*\]:
   Time to wait in seconds before injecting the response on `stdin`,
-  after last interaction happened on `stdin` by the user.
+  after no or the last interaction happened on `stdin` by the user.
 
 - \[`-r`|`--response` *input*\]:
   Response message to inject on `stdin` instead of the user.
-  In the *input* data, the following constructs are expanded:
+  In the *input* data, the following syntactical constructs are expanded:
 
-    - `\o{`*num*`}`: create character by octal character code like `\o{002}`.
-    - `\d{`*num*`}`: create character by decimal character code like `\d{001}`.
+    - `\o{`*num*`}`: create character by octal character code like `\o{177}`.
+    - `\d{`*num*`}`: create character by decimal character code like `\d{127}`.
     - `\x{`*num*`}`: create character by hexadecimal character code like `\x{7f}`.
+    - `\r`, `\n`, `\t`, `\v`: create linefeed, newline, tab and vertical tab
+      characters through short-hand escape sequences.
     - `\k{`*keystroke*`}`: create character by logical keystroke. The 
       *keystroke* argument can be either `ctrl+`*X* where *X* is `a` to `z`
       or it can be the special keys `return`/`cr`, `linefeed`/`lf`,
       `backspace`/`bs` and `delete`/`del`.
-    - `\r`, `\n`, `\t`, `\v`: create linefeed, newline, tab and vertical tab
-      characters through short-hand escape sequences.
 
 - *command*:
-  The shell command to execute.
+  The command to execute. It can be either an absolute path
+  or a program in `$PATH`.
 
 - \[*argument* ...\]:
   Zero or more arguments passed to the command.
+
+## HINT
+
+If you need to evaluate shell constructs like pipelines
+or file descriptor redirections, use an intermediate shell
+as in `autorespond [...] sh -c '[...]'`.
 
 ## EXAMPLES
 
