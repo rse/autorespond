@@ -3,7 +3,7 @@
     "homepage":                   "http://github.com/rse/autorespond",
     "description":                "Terminal Command Auto-Responder",
     "keywords":                   [ "terminal", "command", "stdin", "automatic", "response" ],
-    "version":                    "0.9.7",
+    "version":                    "1.0.0",
     "license":                    "MIT",
     "author": {
         "name":                   "Dr. Ralf S. Engelschall",
