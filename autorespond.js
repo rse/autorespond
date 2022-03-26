@@ -46,6 +46,7 @@ const my        = require("./package.json")
             "dot-notation":              false,
             "halt-at-non-option":        true
         })
+        .version(false)
         .usage(
             "Usage: autorespond " +
             "[-h|--help] " +
@@ -76,7 +77,6 @@ const my        = require("./package.json")
             describe: "response message to inject on stdin",
             alias:    "response", type: "string", nargs: 1, default: ""
         })
-        .version(false)
         .strict(true)
         .showHelpOnFail(true)
         .demand(0)
